@@ -35,6 +35,9 @@
 </head>
 <body>
 <div id="burst-container" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></div>
+<div id="ptr-indicator" style="position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:center;height:0;overflow:hidden;z-index:9998;background:linear-gradient(135deg,#1e0a3c,#2d1260);transition:height 0.2s;border-bottom:2px solid #4c1d95;">
+  <div id="ptr-text" style="color:#a78bfa;font-weight:800;font-size:14px;font-family:Nunito,sans-serif;">⬇️ 下拉重整</div>
+</div>
 <div id="root"></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -480,6 +483,42 @@
   }
 
   render();
+
+  // Pull to refresh
+  var ptrStart = 0;
+  var ptrActive = false;
+  var ptrThreshold = 80;
+
+  document.addEventListener('touchstart', function(e) {
+    if (window.scrollY === 0) {
+      ptrStart = e.touches[0].clientY;
+      ptrActive = true;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', function(e) {
+    if (!ptrActive) return;
+    var dist = Math.max(0, e.touches[0].clientY - ptrStart);
+    if (dist > 0 && window.scrollY === 0) {
+      var h = Math.min(dist * 0.4, 60);
+      var indicator = document.getElementById('ptr-indicator');
+      var text = document.getElementById('ptr-text');
+      if (indicator) indicator.style.height = h + 'px';
+      if (text) text.textContent = dist > ptrThreshold ? '🔄 放開以重整' : '⬇️ 下拉重整';
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    if (!ptrActive) return;
+    var dist = e.changedTouches[0].clientY - ptrStart;
+    var indicator = document.getElementById('ptr-indicator');
+    if (indicator) indicator.style.height = '0';
+    if (dist > ptrThreshold && window.scrollY === 0) {
+      showToast('🔄 重整中…');
+      setTimeout(function() { location.reload(); }, 500);
+    }
+    ptrActive = false;
+  }, { passive: true });
 </script>
 </body>
 </html>
