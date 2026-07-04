@@ -318,7 +318,7 @@
                     </div>
                   </div>
                   <div style="display:flex;gap:8px;">
-                    <input id="newMemberName" value="${s.newName}" oninput="state.newName=this.value" onkeydown="if(event.key==='Enter')addMember()" placeholder="學員名字…" class="input-field" style="flex:1;" />
+                    <input id="newMemberName" value="${s.newName}" oninput="window.state.newName=this.value" onkeydown="if(event.key==='Enter')addMember()" placeholder="學員名字…" class="input-field" style="flex:1;" />
                     <button onclick="addMember()" class="btn-primary">新增</button>
                   </div>
                 </div>
@@ -339,8 +339,8 @@
                     ${EMOJIS.map(e => `<button onclick="selectRewardEmoji('${e}')" style="width:38px;height:38px;border-radius:10px;border:${s.newRewardEmoji===e?"3px solid #a855f7":"2px solid #2d1b5e"};background:${s.newRewardEmoji===e?"#3b1f6a":"transparent"};font-size:20px;cursor:pointer;">${e}</button>`).join("")}
                   </div>
                   <div style="display:flex;gap:8px;margin-bottom:10px;">
-                    <input id="newRewardName" value="${s.newRewardName}" oninput="state.newRewardName=this.value" placeholder="獎勵名稱…" class="input-field" style="flex:2;" />
-                    <input id="newRewardCost" value="${s.newRewardCost}" oninput="state.newRewardCost=this.value" type="number" min="1" placeholder="星星數" class="input-field" style="flex:1;" />
+                    <input id="newRewardName" value="${s.newRewardName}" oninput="window.state.newRewardName=this.value" placeholder="獎勵名稱…" class="input-field" style="flex:2;" />
+                    <input id="newRewardCost" value="${s.newRewardCost}" oninput="window.state.newRewardCost=this.value" type="number" min="1" placeholder="星星數" class="input-field" style="flex:1;" />
                   </div>
                   <button onclick="addReward()" class="btn-primary" style="width:100%;">新增獎勵 🎁</button>
                 </div>
@@ -351,12 +351,12 @@
                       ${EMOJIS.map(e => `<button onclick="setEditEmoji('${e}')" style="width:34px;height:34px;border-radius:9px;border:${s.editingReward.emoji===e?"3px solid #a855f7":"2px solid #2d1b5e"};background:${s.editingReward.emoji===e?"#3b1f6a":"transparent"};font-size:18px;cursor:pointer;">${e}</button>`).join("")}
                     </div>
                     <div style="display:flex;gap:8px;margin-bottom:10px;">
-                      <input value="${s.editingReward.name}" oninput="state.editingReward.name=this.value" class="input-field" style="flex:2;" />
-                      <input value="${s.editingReward.cost}" oninput="state.editingReward.cost=this.value" type="number" class="input-field" style="flex:1;" />
+                      <input value="${s.editingReward.name}" oninput="window.state.editingReward.name=this.value" class="input-field" style="flex:2;" />
+                      <input value="${s.editingReward.cost}" oninput="window.state.editingReward.cost=this.value" type="number" class="input-field" style="flex:1;" />
                     </div>
                     <div style="display:flex;gap:8px;">
                       <button onclick="saveEditReward()" class="btn-primary" style="flex:1;">儲存</button>
-                      <button onclick="state.editingReward=null;render()" class="btn-ghost" style="flex:1;">取消</button>
+                      <button onclick="window.state.editingReward=null;render()" class="btn-ghost" style="flex:1;">取消</button>
                     </div>
                   </div>
                 ` : `
@@ -382,7 +382,7 @@
           const isAdd = s.modal.type === "add";
           const reasonList = isAdd ? ADD_REASONS : REMOVE_REASONS;
           return `
-            <div onclick="state.modal=null;render()" style="position:fixed;inset:0;background:rgba(13,5,32,0.75);backdrop-filter:blur(4px);z-index:10001;display:flex;align-items:flex-end;justify-content:center;">
+            <div onclick="window.state.modal=null;render()" style="position:fixed;inset:0;background:rgba(13,5,32,0.75);backdrop-filter:blur(4px);z-index:10001;display:flex;align-items:flex-end;justify-content:center;">
               <div onclick="event.stopPropagation()" style="width:100%;max-width:480px;background:linear-gradient(180deg,#1e0a3c,#12052a);border-top:3px solid ${isAdd?"#fbbf24":"#fb7185"};border-radius:28px 28px 0 0;padding:20px 20px 36px;animation:floatIn 0.25s ease;">
                 <div style="width:40px;height:5px;border-radius:3px;background:#3b1f6a;margin:0 auto 16px;"></div>
                 <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">
@@ -412,10 +412,10 @@
 
                 <!-- Custom -->
                 <div style="display:flex;gap:8px;">
-                  <input id="customReasonInput" value="${s.customReason}" oninput="state.customReason=this.value" onkeydown="if(event.key==='Enter'&&state.customReason.trim())confirmChange(state.customReason.trim())" placeholder="自己輸入原因…" class="input-field" style="flex:1;" />
+                  <input id="customReasonInput" value="${s.customReason}" oninput="window.state.customReason=this.value" onkeydown="if(event.key==='Enter'&&state.customReason.trim())confirmChange(state.customReason.trim())" placeholder="自己輸入原因…" class="input-field" style="flex:1;" />
                   <button onclick="if(state.customReason.trim())confirmChange(state.customReason.trim())" style="padding:0 20px;border-radius:16px;border:none;background:${isAdd?"linear-gradient(135deg,#fbbf24,#f97316)":"linear-gradient(135deg,#fb7185,#e11d48)"};color:#1a0a3c;font-weight:900;font-size:14px;cursor:pointer;font-family:Nunito,sans-serif;">確認</button>
                 </div>
-                <button onclick="state.modal=null;render()" style="width:100%;margin-top:12px;padding:10px 0;border-radius:14px;border:none;background:transparent;color:#6b46c1;font-weight:700;font-size:13px;cursor:pointer;font-family:Nunito,sans-serif;">取消</button>
+                <button onclick="window.state.modal=null;render()" style="width:100%;margin-top:12px;padding:10px 0;border-radius:14px;border:none;background:transparent;color:#6b46c1;font-weight:700;font-size:13px;cursor:pointer;font-family:Nunito,sans-serif;">取消</button>
               </div>
             </div>
           `;
@@ -424,6 +424,7 @@
     }
 
     // ── Global handlers ──
+    window.state = state;
     window.setTab = t => { state.tab = t; render(); };
     window.setManageSection = s => { state.manageSection = s; render(); };
     window.openModal = (id, type) => openModal(id, type);
