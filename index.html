@@ -4,40 +4,66 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="星星魔法學院" />
   <title>星星魔法學院</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Nunito', sans-serif; background: #0d0520; color: #f8f0ff; min-height: 100vh; }
+    body { font-family: 'Nunito', sans-serif; background: #f0f4f8; color: #2d3748; min-height: 100vh; }
+
     @keyframes burst { 0%{transform:translate(0,0) scale(1);opacity:1} 100%{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0} }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
     @keyframes floatIn { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.12)} }
+    @keyframes pop { 0%{transform:scale(0.8);opacity:0} 70%{transform:scale(1.1)} 100%{transform:scale(1);opacity:1} }
+    @keyframes spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
     .fade-in { animation: floatIn 0.3s ease; }
-    .badge { background:#1e0a3c;border:2px solid #4c1d95;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:800;color:#c4b5fd; }
-    .tab-btn { flex:1;padding:10px 0;border-radius:14px;border:none;cursor:pointer;font-weight:800;font-size:13px;font-family:Nunito,sans-serif;background:transparent;color:#6b46c1;transition:all 0.2s; }
-    .tab-active { background:linear-gradient(135deg,#7c3aed,#a855f7)!important;color:#fff!important;box-shadow:0 4px 16px rgba(124,58,237,0.4); }
-    .sub-tab { flex:1;padding:8px 0;border-radius:12px;border:none;cursor:pointer;font-weight:800;font-size:14px;font-family:Nunito,sans-serif;background:transparent;color:#6b46c1;transition:all 0.2s; }
-    .sub-active { background:linear-gradient(135deg,#7c3aed,#a855f7)!important;color:#fff!important; }
-    .member-card { border-radius:24px;padding:18px 20px;margin-bottom:12px;display:flex;align-items:center;gap:14px; }
-    .star-btn { width:40px;height:40px;border-radius:14px;border:none;cursor:pointer;background:linear-gradient(135deg,#fbbf24,#f97316);font-size:20px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(251,191,36,0.4);animation:pulse 1.5s ease-in-out infinite; }
-    .minus-btn { width:40px;height:40px;border-radius:14px;border:2px solid #3b1f6a;cursor:pointer;background:transparent;color:#4c1d95;font-size:18px;font-weight:900;display:flex;align-items:center;justify-content:center; }
-    .input-field { padding:12px 16px;border-radius:16px;border:3px solid #3b1f6a;background:#2d1b5e;color:#f8f0ff;font-size:15px;font-family:Nunito,sans-serif;outline:none; }
-    .input-field:focus { border-color:#a855f7; }
-    .btn-primary { padding:12px 18px;border-radius:16px;border:none;cursor:pointer;background:linear-gradient(135deg,#7c3aed,#a855f7);color:#fff;font-weight:900;font-size:15px;font-family:Nunito,sans-serif;box-shadow:0 4px 12px rgba(124,58,237,0.4);white-space:nowrap; }
-    .btn-ghost { padding:7px 14px;border-radius:10px;border:2px solid #3b1f6a;cursor:pointer;background:transparent;color:#6b46c1;font-weight:700;font-size:13px;font-family:Nunito,sans-serif; }
-    .toast { position:fixed;bottom:36px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#7c3aed,#f472b6);color:#fff;padding:12px 28px;border-radius:50px;font-weight:900;font-size:15px;z-index:10000;white-space:nowrap;box-shadow:0 8px 32px rgba(124,58,237,0.5);animation:floatIn 0.3s ease; }
-    ::-webkit-scrollbar{width:6px} ::-webkit-scrollbar-track{background:#1a0a2e} ::-webkit-scrollbar-thumb{background:#4c1d95;border-radius:3px}
+
+    /* Header */
+    .header-bg { background: linear-gradient(160deg, #4ade80 0%, #22c55e 100%); border-radius: 0 0 32px 32px; padding: 20px 20px 32px; }
+
+    /* Tab bar */
+    .tab-bar { display: flex; background: #fff; border-radius: 20px; padding: 6px; gap: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    .tab-btn { flex: 1; padding: 10px 0; border-radius: 14px; border: none; cursor: pointer; font-weight: 800; font-size: 13px; font-family: Nunito,sans-serif; background: transparent; color: #94a3b8; transition: all 0.2s; }
+    .tab-active { background: #4ade80 !important; color: #fff !important; box-shadow: 0 4px 12px rgba(74,222,128,0.4); }
+
+    .sub-tab { flex: 1; padding: 8px 0; border-radius: 12px; border: none; cursor: pointer; font-weight: 800; font-size: 14px; font-family: Nunito,sans-serif; background: transparent; color: #94a3b8; transition: all 0.2s; }
+    .sub-active { background: #4ade80 !important; color: #fff !important; }
+
+    /* Cards */
+    .card { background: #fff; border-radius: 24px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .member-card { background: #fff; border-radius: 20px; padding: 14px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+
+    /* Buttons */
+    .star-btn { width: 44px; height: 44px; border-radius: 14px; border: none; cursor: pointer; background: linear-gradient(135deg, #fbbf24, #f97316); font-size: 22px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(251,191,36,0.4); animation: pulse 1.5s ease-in-out infinite; }
+    .minus-btn { width: 44px; height: 44px; border-radius: 14px; border: 2px solid #e2e8f0; cursor: pointer; background: #fff; color: #94a3b8; font-size: 20px; font-weight: 900; display: flex; align-items: center; justify-content: center; }
+    .btn-primary { padding: 13px 20px; border-radius: 16px; border: none; cursor: pointer; background: linear-gradient(135deg, #4ade80, #22c55e); color: #fff; font-weight: 900; font-size: 15px; font-family: Nunito,sans-serif; box-shadow: 0 4px 12px rgba(74,222,128,0.4); white-space: nowrap; }
+    .btn-ghost { padding: 7px 14px; border-radius: 10px; border: 2px solid #e2e8f0; cursor: pointer; background: #fff; color: #94a3b8; font-weight: 700; font-size: 13px; font-family: Nunito,sans-serif; }
+    .btn-danger { padding: 7px 14px; border-radius: 10px; border: 2px solid #fecaca; cursor: pointer; background: #fff; color: #f87171; font-weight: 700; font-size: 13px; font-family: Nunito,sans-serif; }
+
+    .input-field { padding: 12px 16px; border-radius: 14px; border: 2px solid #e2e8f0; background: #f8fafc; color: #2d3748; font-size: 15px; font-family: Nunito,sans-serif; outline: none; }
+    .input-field:focus { border-color: #4ade80; background: #fff; }
+
+    .toast { position: fixed; bottom: 36px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #22c55e, #4ade80); color: #fff; padding: 12px 28px; border-radius: 50px; font-weight: 900; font-size: 15px; z-index: 10000; white-space: nowrap; box-shadow: 0 8px 32px rgba(74,222,128,0.4); animation: floatIn 0.3s ease; }
+
+    /* Rank colors */
+    .rank-1 { background: linear-gradient(135deg, #fef3c7, #fde68a); border: 2px solid #fbbf24; }
+    .rank-2 { background: linear-gradient(135deg, #f1f5f9, #e2e8f0); border: 2px solid #94a3b8; }
+    .rank-3 { background: linear-gradient(135deg, #fff7ed, #fed7aa); border: 2px solid #fb923c; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #f0f4f8; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
   </style>
 </head>
 <body>
-<div id="burst-container" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></div>
-<div id="ptr-indicator" style="position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:center;height:0;overflow:hidden;z-index:9998;background:linear-gradient(135deg,#1e0a3c,#2d1260);transition:height 0.2s;border-bottom:2px solid #4c1d95;">
-  <div id="ptr-text" style="color:#a78bfa;font-weight:800;font-size:14px;font-family:Nunito,sans-serif;">⬇️ 下拉重整</div>
+<div id="ptr-indicator" style="position:fixed;top:0;left:0;right:0;display:flex;align-items:center;justify-content:center;height:0;overflow:hidden;z-index:9998;background:#fff;border-bottom:2px solid #e2e8f0;transition:height 0.2s;">
+  <div id="ptr-text" style="color:#4ade80;font-weight:800;font-size:14px;font-family:Nunito,sans-serif;">⬇️ 下拉重整</div>
 </div>
+<div id="burst-container" style="position:fixed;inset:0;pointer-events:none;z-index:9999;"></div>
 <div id="root"></div>
 
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -53,12 +79,12 @@
     appId: "1:994815410563:web:8d9c34b8b69d7c926b76b6"
   });
 
-  const db = firebase.database();
+  var db = firebase.database();
 
-  const AVATARS = ["🐰","🐻","🦊","🐼","🐸","🦁","🐯","🐨","🐹","🦄","🐙","🦋"];
-  const EMOJIS  = ["🎁","⌚","☕","🍕","🎬","🏖️","🎮","📱","👟","🎵","🍰","✈️","🛍️","💐","🏆"];
-  const ADD_REASONS    = ["主動分享","完成功課","幫忙做家事","保持禮貌","收拾玩具","早睡早起","勇敢嘗試"];
-  const REMOVE_REASONS = ["講不禮貌的話","沒有收拾","發脾氣","不聽話","打人/咬人"];
+  var AVATARS = ["🐰","🐻","🦊","🐼","🐸","🦁","🐯","🐨","🐹","🦄","🐙","🦋"];
+  var EMOJIS  = ["🎁","⌚","☕","🍕","🎬","🏖️","🎮","📱","👟","🎵","🍰","✈️","🛍️","💐","🏆"];
+  var ADD_REASONS    = ["主動分享","完成功課","幫忙做家事","保持禮貌","收拾玩具","早睡早起","勇敢嘗試"];
+  var REMOVE_REASONS = ["講不禮貌的話","沒有收拾","發脾氣","不聽話","打人/咬人"];
 
   var state = {
     members: {}, rewards: {}, history: [],
@@ -68,7 +94,6 @@
     editingReward: null, toast: null, toastTimer: null,
   };
 
-  // Firebase listeners
   db.ref("members").on("value", function(snap) { state.members = snap.val() || {}; render(); });
   db.ref("rewards").on("value", function(snap) { state.rewards = snap.val() || {}; render(); });
   db.ref("history").on("value", function(snap) { state.history = snap.val() || []; render(); });
@@ -83,11 +108,11 @@
   }
 
   function getRank(stars) {
-    if (stars >= 100) return { label: "⭐ 超級巨星", color: "#fbbf24" };
-    if (stars >= 50)  return { label: "🌟 閃亮明星", color: "#f472b6" };
-    if (stars >= 20)  return { label: "✨ 小小明星", color: "#34d399" };
-    if (stars >= 5)   return { label: "💫 新星出發", color: "#818cf8" };
-    return { label: "🌱 小小新生", color: "#94a3b8" };
+    if (stars >= 100) return { label: "超級巨星 ⭐", color: "#f59e0b", bg: "#fef3c7" };
+    if (stars >= 50)  return { label: "閃亮明星 🌟", color: "#a855f7", bg: "#f3e8ff" };
+    if (stars >= 20)  return { label: "小小明星 ✨", color: "#22c55e", bg: "#dcfce7" };
+    if (stars >= 5)   return { label: "新星出發 💫", color: "#3b82f6", bg: "#dbeafe" };
+    return { label: "小小新生 🌱", color: "#94a3b8", bg: "#f1f5f9" };
   }
 
   function saveHistory(entry) {
@@ -98,179 +123,214 @@
   function burst() {
     var bc = document.getElementById("burst-container");
     var cx = window.innerWidth / 2, cy = window.innerHeight / 3;
-    var emojis = ["⭐","✨","💫","🌟"];
-    for (var i = 0; i < 12; i++) {
+    var emojis = ["⭐","✨","💫","🌟","🎉"];
+    for (var i = 0; i < 14; i++) {
       var span = document.createElement("span");
-      var angle = (i / 12) * 360;
-      var dist = 50 + Math.random() * 40;
+      var angle = (i / 14) * 360;
+      var dist = 60 + Math.random() * 50;
       var rad = angle * Math.PI / 180;
-      var dx = Math.cos(rad) * dist, dy = Math.sin(rad) * dist;
-      span.textContent = emojis[Math.floor(Math.random() * 4)];
-      span.style.cssText = "position:fixed;left:"+cx+"px;top:"+cy+"px;font-size:"+(14+Math.random()*10)+"px;pointer-events:none;animation:burst 0.7s ease-out forwards;--dx:"+dx+"px;--dy:"+dy+"px;";
+      span.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      span.style.cssText = "position:fixed;left:"+cx+"px;top:"+cy+"px;font-size:"+(16+Math.random()*12)+"px;pointer-events:none;animation:burst 0.8s ease-out forwards;--dx:"+(Math.cos(rad)*dist)+"px;--dy:"+(Math.sin(rad)*dist)+"px;";
       bc.appendChild(span);
-      setTimeout(function(s){ return function(){ s.remove(); }; }(span), 700);
+      setTimeout(function(s){ return function(){ s.remove(); }; }(span), 800);
     }
   }
 
   function confirmChange(reason) {
     if (!state.modal) return;
-    var memberId = state.modal.memberId;
-    var type = state.modal.type;
+    var memberId = state.modal.memberId, type = state.modal.type;
     var member = state.members[memberId];
     if (!member) { state.modal = null; render(); return; }
     var amount = Math.max(1, state.starAmount);
     var now = new Date().toLocaleTimeString("zh-TW");
-
     if (type === "add") {
-      db.ref("members/" + memberId + "/stars").set((member.stars || 0) + amount);
-      saveHistory({ time: now, name: member.name, action: "得到 " + amount + " 顆星：" + reason, type: "add" });
+      db.ref("members/"+memberId+"/stars").set((member.stars||0)+amount);
+      saveHistory({ time:now, name:member.name, action:"得到 "+amount+" 顆星："+reason, type:"add" });
       burst();
     } else {
-      var actual = Math.min(amount, member.stars || 0);
-      if (actual <= 0) { state.modal = null; render(); return; }
-      db.ref("members/" + memberId + "/stars").set((member.stars || 0) - actual);
-      saveHistory({ time: now, name: member.name, action: "扣 " + actual + " 顆星：" + reason, type: "remove" });
+      var actual = Math.min(amount, member.stars||0);
+      if (actual <= 0) { state.modal=null; render(); return; }
+      db.ref("members/"+memberId+"/stars").set((member.stars||0)-actual);
+      saveHistory({ time:now, name:member.name, action:"扣 "+actual+" 顆星："+reason, type:"remove" });
     }
-    state.modal = null;
-    render();
+    state.modal = null; render();
   }
 
   function render() {
-    var members = Object.keys(state.members).map(function(id){ return Object.assign({}, state.members[id], {id:id}); });
-    var rewards = Object.keys(state.rewards).map(function(id){ return Object.assign({}, state.rewards[id], {id:id}); });
+    var members = Object.keys(state.members).map(function(id){ return Object.assign({},state.members[id],{id:id}); });
+    var rewards = Object.keys(state.rewards).map(function(id){ return Object.assign({},state.rewards[id],{id:id}); });
     var sorted = members.slice().sort(function(a,b){ return (b.stars||0)-(a.stars||0); });
-    var totalStars = members.reduce(function(acc,m){ return acc+(m.stars||0); }, 0);
+    var totalStars = members.reduce(function(acc,m){ return acc+(m.stars||0); },0);
     var medals = ["🥇","🥈","🥉"];
+    var rankClasses = ["rank-1","rank-2","rank-3"];
 
-    var html = '<div style="max-width:480px;margin:0 auto;padding:28px 16px 100px;">';
+    var html = '';
 
-    // Header
-    html += '<div style="text-align:center;margin-bottom:32px;">';
-    html += '<div style="font-size:64px;animation:float 3s ease-in-out infinite;display:inline-block;">🌟</div>';
-    html += '<h1 style="font-size:28px;font-weight:900;margin-top:8px;background:linear-gradient(135deg,#fbbf24,#f472b6,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">星星魔法學院</h1>';
-    html += '<p style="color:#a78bfa;font-size:14px;margin-top:6px;font-weight:700;">收集星星，解鎖神奇獎勵！✨</p>';
-    html += '<div style="display:flex;justify-content:center;gap:12px;margin-top:12px;flex-wrap:wrap;">';
-    html += '<div class="badge">👥 '+members.length+' 位學員</div>';
-    html += '<div class="badge">⭐ '+totalStars+' 顆星</div>';
-    html += '<div class="badge" style="color:#34d399;">🔴 即時同步中</div>';
-    html += '</div></div>';
+    // ── Header ──
+    html += '<div class="header-bg">';
+    html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">';
+    html += '<div style="font-size:22px;font-weight:900;color:#fff;">⭐ 星星魔法學院</div>';
+    html += '<div style="background:rgba(255,255,255,0.3);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:800;color:#fff;">🔴 即時同步</div>';
+    html += '</div>';
+
+    // Top member spotlight
+    if (sorted.length > 0) {
+      var top = sorted[0];
+      var topRank = getRank(top.stars||0);
+      html += '<div style="text-align:center;animation:pop 0.4s ease;">';
+      html += '<div style="font-size:72px;animation:float 2.5s ease-in-out infinite;display:inline-block;filter:drop-shadow(0 4px 8px rgba(0,0,0,0.15));">'+top.avatar+'</div>';
+      html += '<div style="background:rgba(255,255,255,0.95);border-radius:20px;padding:12px 24px;margin-top:8px;display:inline-block;min-width:160px;">';
+      html += '<div style="font-weight:900;font-size:20px;color:#2d3748;">'+top.name+'</div>';
+      html += '<div style="font-size:36px;font-weight:900;color:#f59e0b;line-height:1.1;">'+(top.stars||0)+'<span style="font-size:16px;color:#94a3b8;font-weight:700;"> 顆星</span></div>';
+      html += '<div style="font-size:13px;font-weight:700;color:'+topRank.color+';margin-top:2px;">'+topRank.label+'</div>';
+      html += '</div>';
+      html += '<div style="color:rgba(255,255,255,0.9);font-size:13px;font-weight:800;margin-top:8px;">🏆 目前第一名！</div>';
+      html += '</div>';
+    } else {
+      html += '<div style="text-align:center;padding:20px 0;">';
+      html += '<div style="font-size:64px;">🌟</div>';
+      html += '<div style="color:#fff;font-weight:800;font-size:16px;margin-top:8px;">新增學員開始吧！</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+
+    // ── Content area ──
+    html += '<div style="padding:16px 16px 100px;">';
+
+    // Stats row
+    html += '<div style="display:flex;gap:10px;margin-bottom:16px;">';
+    html += '<div class="card" style="flex:1;padding:12px;text-align:center;"><div style="font-size:22px;font-weight:900;color:#4ade80;">'+members.length+'</div><div style="font-size:12px;color:#94a3b8;font-weight:700;">位學員</div></div>';
+    html += '<div class="card" style="flex:1;padding:12px;text-align:center;"><div style="font-size:22px;font-weight:900;color:#f59e0b;">'+totalStars+'</div><div style="font-size:12px;color:#94a3b8;font-weight:700;">顆星</div></div>';
+    html += '<div class="card" style="flex:1;padding:12px;text-align:center;"><div style="font-size:22px;font-weight:900;color:#a855f7;">'+rewards.length+'</div><div style="font-size:12px;color:#94a3b8;font-weight:700;">項獎勵</div></div>';
+    html += '</div>';
 
     // Tabs
-    html += '<div style="display:flex;gap:6px;margin-bottom:24px;background:#1e0a3c;border-radius:20px;padding:6px;border:2px solid #3b1f6a;">';
+    html += '<div class="tab-bar" style="margin-bottom:16px;">';
     [["board","🏆 排行榜"],["rewards","🎁 換獎勵"],["manage","⚙️ 管理"]].forEach(function(t){
       html += '<button class="tab-btn'+(state.tab===t[0]?' tab-active':'')+'" data-tab="'+t[0]+'">'+t[1]+'</button>';
     });
     html += '</div>';
 
-    // Board
+    // ── Board ──
     if (state.tab === "board") {
       html += '<div class="fade-in">';
+      if (members.length === 0) {
+        html += '<div class="card" style="padding:40px;text-align:center;"><div style="font-size:48px;margin-bottom:12px;">👥</div><div style="font-weight:800;color:#94a3b8;">還沒有學員喔！</div><div style="font-size:13px;color:#cbd5e1;margin-top:4px;">去「管理」頁面新增</div></div>';
+      }
       sorted.forEach(function(m, i) {
         var rank = getRank(m.stars||0);
-        html += '<div class="member-card" style="background:'+(i===0?'linear-gradient(135deg,#2d1260,#4c1d95)':'#1a0a3c')+';border:2px solid '+(i===0?'#7c3aed':'#2d1b5e')+';box-shadow:'+(i===0?'0 0 32px rgba(124,58,237,0.3)':'none')+'">';
-        html += '<div style="font-size:'+(i<3?28:16)+'px;font-weight:900;width:32px;text-align:center;color:#fbbf24;">'+(i<3?medals[i]:i+1)+'</div>';
-        html += '<div style="width:56px;height:56px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#4c1d95,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:30px;border:3px solid #6d28d9;">'+m.avatar+'</div>';
+        var cardClass = i < 3 ? rankClasses[i] : '';
+        html += '<div class="member-card '+cardClass+'">';
+        html += '<div style="font-size:'+(i<3?26:15)+'px;font-weight:900;width:28px;text-align:center;">'+(i<3?medals[i]:i+1)+'</div>';
+        html += '<div style="width:52px;height:52px;border-radius:18px;flex-shrink:0;background:'+rank.bg+';display:flex;align-items:center;justify-content:center;font-size:28px;">'+m.avatar+'</div>';
         html += '<div style="flex:1;min-width:0;">';
-        html += '<div style="font-weight:900;font-size:18px;">'+m.name+'</div>';
-        html += '<div style="font-size:12px;color:'+rank.color+';font-weight:800;margin-top:2px;">'+rank.label+'</div>';
-        html += '<div style="margin-top:6px;height:6px;border-radius:3px;background:#2d1b5e;overflow:hidden;"><div style="height:100%;border-radius:3px;background:linear-gradient(90deg,#7c3aed,#f472b6);width:'+Math.min(((m.stars||0)/150)*100,100)+'%;transition:width 0.5s;"></div></div>';
+        html += '<div style="font-weight:900;font-size:17px;color:#1e293b;">'+m.name+'</div>';
+        html += '<div style="display:inline-block;padding:2px 10px;border-radius:20px;background:'+rank.bg+';color:'+rank.color+';font-size:11px;font-weight:800;margin-top:3px;">'+rank.label+'</div>';
+        html += '<div style="margin-top:6px;height:5px;border-radius:3px;background:#e2e8f0;overflow:hidden;"><div style="height:100%;border-radius:3px;background:linear-gradient(90deg,#4ade80,#22c55e);width:'+Math.min(((m.stars||0)/150)*100,100)+'%;transition:width 0.5s;"></div></div>';
         html += '</div>';
-        html += '<div style="text-align:center;margin-right:4px;"><div style="font-size:26px;font-weight:900;background:linear-gradient(135deg,#fbbf24,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">'+(m.stars||0)+'</div><div style="font-size:11px;color:#6b46c1;font-weight:700;">顆星</div></div>';
+        html += '<div style="text-align:center;">';
+        html += '<div style="font-size:28px;font-weight:900;color:#f59e0b;line-height:1;">'+(m.stars||0)+'</div>';
+        html += '<div style="font-size:10px;color:#94a3b8;font-weight:700;">顆星</div>';
+        html += '</div>';
         html += '<div style="display:flex;flex-direction:column;gap:6px;">';
         html += '<button class="star-btn" data-action="add" data-id="'+m.id+'">⭐</button>';
         html += '<button class="minus-btn" data-action="remove" data-id="'+m.id+'">−</button>';
         html += '</div></div>';
       });
+
       if (state.history.length > 0) {
-        html += '<div style="margin-top:24px;background:#1a0a3c;border-radius:20px;padding:16px;border:2px solid #2d1b5e;">';
-        html += '<div style="color:#a78bfa;font-size:13px;font-weight:800;margin-bottom:12px;">📋 最近紀錄</div>';
+        html += '<div class="card" style="padding:16px;margin-top:8px;">';
+        html += '<div style="font-size:14px;font-weight:800;color:#64748b;margin-bottom:12px;">📋 最近紀錄</div>';
         state.history.slice(0,8).forEach(function(h,i){
-          html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:'+(i<7?'1px solid #2d1b5e':'none')+';font-size:13px;gap:8px;">';
-          html += '<span style="display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;">';
+          html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:'+(i<7?'1px solid #f1f5f9':'none')+';gap:8px;">';
+          html += '<span style="display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden;font-size:13px;">';
           html += '<span>'+(h.type==='remove'?'🔻':h.type==='redeem'?'🎁':'⭐')+'</span>';
-          html += '<span style="color:#f472b6;font-weight:800;flex-shrink:0;">'+h.name+'</span>';
-          html += '<span style="color:'+(h.type==='remove'?'#fb7185':'#c4b5fd')+';overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+h.action+'</span>';
-          html += '</span><span style="color:#4c1d95;font-size:12px;flex-shrink:0;">'+h.time+'</span></div>';
+          html += '<span style="color:#22c55e;font-weight:800;flex-shrink:0;">'+h.name+'</span>';
+          html += '<span style="color:#64748b;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">'+h.action+'</span>';
+          html += '</span><span style="color:#cbd5e1;font-size:11px;flex-shrink:0;">'+h.time+'</span></div>';
         });
         html += '</div>';
       }
       html += '</div>';
     }
 
-    // Rewards
+    // ── Rewards ──
     if (state.tab === "rewards") {
       html += '<div class="fade-in">';
       if (rewards.length === 0) {
-        html += '<div style="text-align:center;padding:48px;background:#1a0a3c;border-radius:24px;border:2px solid #2d1b5e;"><div style="font-size:48px;margin-bottom:12px;">🎁</div><div style="font-weight:800;color:#6b46c1;">還沒有獎勵喔！</div></div>';
+        html += '<div class="card" style="padding:48px;text-align:center;"><div style="font-size:48px;margin-bottom:12px;">🎁</div><div style="font-weight:800;color:#94a3b8;">還沒有獎勵喔！</div></div>';
       }
       rewards.forEach(function(r){
-        html += '<div style="background:linear-gradient(135deg,#1e0a3c,#2d1260);border-radius:24px;padding:20px;margin-bottom:14px;border:2px solid #4c1d95;">';
+        html += '<div class="card" style="padding:20px;margin-bottom:12px;">';
         html += '<div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;">';
-        html += '<div style="width:64px;height:64px;border-radius:20px;font-size:36px;background:linear-gradient(135deg,#4c1d95,#7c3aed);display:flex;align-items:center;justify-content:center;">'+r.emoji+'</div>';
-        html += '<div><div style="font-weight:900;font-size:20px;">'+r.name+'</div>';
-        html += '<div style="font-weight:900;font-size:22px;background:linear-gradient(135deg,#fbbf24,#f97316);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">⭐ '+r.cost+'</div></div></div>';
+        html += '<div style="width:64px;height:64px;border-radius:20px;font-size:36px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;border:2px solid #bbf7d0;">'+r.emoji+'</div>';
+        html += '<div><div style="font-weight:900;font-size:20px;color:#1e293b;">'+r.name+'</div>';
+        html += '<div style="margin-top:4px;"><span style="font-size:22px;font-weight:900;color:#f59e0b;">⭐ '+r.cost+'</span><span style="font-size:13px;color:#94a3b8;font-weight:700;margin-left:4px;">顆星</span></div></div></div>';
         html += '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">';
         members.forEach(function(m){
           var can = (m.stars||0) >= r.cost;
-          html += '<button data-action="redeem" data-mid="'+m.id+'" data-rid="'+r.id+'" style="padding:10px 8px;border-radius:14px;border:2px solid '+(can?'#7c3aed':'#2d1b5e')+';cursor:pointer;background:'+(can?'linear-gradient(135deg,#3b1f6a,#4c1d95)':'#12052a')+';color:'+(can?'#f8f0ff':'#3b1f6a')+';font-weight:800;font-size:13px;font-family:Nunito,sans-serif;display:flex;align-items:center;justify-content:center;gap:6px;">';
-          html += '<span style="font-size:18px;">'+m.avatar+'</span><div style="text-align:left;"><div style="font-size:12px;">'+m.name+'</div><div style="font-size:11px;color:'+(can?'#fbbf24':'#3b1f6a')+'">'+(m.stars||0)+'⭐</div></div></button>';
+          html += '<button data-action="redeem" data-mid="'+m.id+'" data-rid="'+r.id+'" style="padding:10px 8px;border-radius:14px;border:2px solid '+(can?'#bbf7d0':'#e2e8f0')+';cursor:pointer;background:'+(can?'#f0fdf4':'#f8fafc')+';font-weight:800;font-size:13px;font-family:Nunito,sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all 0.2s;">';
+          html += '<span style="font-size:20px;">'+m.avatar+'</span>';
+          html += '<div style="text-align:left;"><div style="font-size:13px;color:'+(can?'#15803d':'#94a3b8')+';">'+m.name+'</div><div style="font-size:12px;color:'+(can?'#f59e0b':'#cbd5e1')+';font-weight:800;">'+(m.stars||0)+'⭐</div></div>';
+          html += '</button>';
         });
         html += '</div></div>';
       });
       html += '</div>';
     }
 
-    // Manage
+    // ── Manage ──
     if (state.tab === "manage") {
       html += '<div class="fade-in">';
-      html += '<div style="display:flex;gap:8px;margin-bottom:20px;background:#1a0a3c;border-radius:16px;padding:6px;border:2px solid #2d1b5e;">';
+      html += '<div style="display:flex;gap:8px;margin-bottom:16px;background:#fff;border-radius:16px;padding:6px;box-shadow:0 2px 8px rgba(0,0,0,0.06);">';
       html += '<button class="sub-tab'+(state.manageSection==='members'?' sub-active':'')+'" data-section="members">👥 學員</button>';
       html += '<button class="sub-tab'+(state.manageSection==='rewards'?' sub-active':'')+'" data-section="rewards">🎁 獎勵</button>';
       html += '</div>';
 
       if (state.manageSection === "members") {
-        html += '<div style="background:#1a0a3c;border-radius:20px;padding:16px;margin-bottom:16px;border:2px solid #2d1b5e;">';
-        html += '<div style="font-weight:800;color:#a78bfa;font-size:13px;margin-bottom:12px;">➕ 新增學員</div>';
-        html += '<div style="font-size:12px;color:#6b46c1;font-weight:700;margin-bottom:8px;">選動物頭像</div>';
-        html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;">';
+        html += '<div class="card" style="padding:16px;margin-bottom:14px;">';
+        html += '<div style="font-weight:800;color:#22c55e;font-size:14px;margin-bottom:12px;">➕ 新增學員</div>';
+        html += '<div style="font-size:12px;color:#94a3b8;font-weight:700;margin-bottom:8px;">選動物頭像</div>';
+        html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">';
         AVATARS.forEach(function(a){
-          html += '<button data-action="avatar" data-val="'+a+'" style="width:40px;height:40px;border-radius:12px;border:'+(state.newAvatar===a?'3px solid #a855f7':'2px solid #2d1b5e')+';background:'+(state.newAvatar===a?'#3b1f6a':'transparent')+';font-size:22px;cursor:pointer;">'+a+'</button>';
+          html += '<button data-action="avatar" data-val="'+a+'" style="width:44px;height:44px;border-radius:14px;border:2px solid '+(state.newAvatar===a?'#4ade80':'#e2e8f0')+';background:'+(state.newAvatar===a?'#f0fdf4':'#fff')+';font-size:24px;cursor:pointer;box-shadow:'+(state.newAvatar===a?'0 0 0 3px #bbf7d0':'none')+';">'+a+'</button>';
         });
         html += '</div>';
         html += '<div style="display:flex;gap:8px;">';
-        html += '<input id="newMemberName" class="input-field" placeholder="學員名字…" style="flex:1;" />';
+        html += '<input id="newMemberName" class="input-field" placeholder="學員名字…" style="flex:1;" autocomplete="off" />';
         html += '<button id="addMemberBtn" class="btn-primary">新增</button>';
         html += '</div></div>';
         members.forEach(function(m){
-          html += '<div style="background:#1a0a3c;border-radius:18px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;border:2px solid #2d1b5e;">';
+          html += '<div class="member-card">';
           html += '<div style="font-size:32px;">'+m.avatar+'</div>';
-          html += '<div style="flex:1;"><div style="font-weight:800;font-size:16px;">'+m.name+'</div><div style="font-size:13px;color:#fbbf24;font-weight:700;">⭐ '+(m.stars||0)+' 顆星</div></div>';
-          html += '<button class="btn-ghost" data-action="removeMember" data-id="'+m.id+'">移除</button>';
+          html += '<div style="flex:1;"><div style="font-weight:800;font-size:16px;">'+m.name+'</div><div style="font-size:13px;color:#f59e0b;font-weight:700;">⭐ '+(m.stars||0)+' 顆星</div></div>';
+          html += '<button class="btn-danger" data-action="removeMember" data-id="'+m.id+'">移除</button>';
           html += '</div>';
         });
       }
 
       if (state.manageSection === "rewards") {
-        html += '<div style="background:#1a0a3c;border-radius:20px;padding:16px;margin-bottom:16px;border:2px solid #2d1b5e;">';
-        html += '<div style="font-weight:800;color:#a78bfa;font-size:13px;margin-bottom:12px;">➕ 新增獎勵</div>';
-        html += '<div style="font-size:12px;color:#6b46c1;font-weight:700;margin-bottom:8px;">選圖示</div>';
+        html += '<div class="card" style="padding:16px;margin-bottom:14px;">';
+        html += '<div style="font-weight:800;color:#22c55e;font-size:14px;margin-bottom:12px;">➕ 新增獎勵</div>';
+        html += '<div style="font-size:12px;color:#94a3b8;font-weight:700;margin-bottom:8px;">選圖示</div>';
         html += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;">';
         EMOJIS.forEach(function(e){
-          html += '<button data-action="remoji" data-val="'+e+'" style="width:38px;height:38px;border-radius:10px;border:'+(state.newRewardEmoji===e?'3px solid #a855f7':'2px solid #2d1b5e')+';background:'+(state.newRewardEmoji===e?'#3b1f6a':'transparent')+';font-size:20px;cursor:pointer;">'+e+'</button>';
+          html += '<button data-action="remoji" data-val="'+e+'" style="width:40px;height:40px;border-radius:12px;border:2px solid '+(state.newRewardEmoji===e?'#4ade80':'#e2e8f0')+';background:'+(state.newRewardEmoji===e?'#f0fdf4':'#fff')+';font-size:20px;cursor:pointer;">'+e+'</button>';
         });
         html += '</div>';
         html += '<div style="display:flex;gap:8px;margin-bottom:10px;">';
-        html += '<input id="newRewardName" class="input-field" placeholder="獎勵名稱…" style="flex:2;" />';
+        html += '<input id="newRewardName" class="input-field" placeholder="獎勵名稱…" style="flex:2;" autocomplete="off" />';
         html += '<input id="newRewardCost" class="input-field" type="number" min="1" placeholder="星星數" style="flex:1;" />';
         html += '</div>';
         html += '<button id="addRewardBtn" class="btn-primary" style="width:100%;">新增獎勵 🎁</button>';
         html += '</div>';
+
         rewards.forEach(function(r){
           if (state.editingReward && state.editingReward.id === r.id) {
-            html += '<div style="background:#1a0a3c;border-radius:18px;padding:16px;margin-bottom:10px;border:2px solid #7c3aed;">';
+            html += '<div class="card" style="padding:16px;margin-bottom:10px;border:2px solid #4ade80;">';
             html += '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;">';
             EMOJIS.forEach(function(e){
-              html += '<button data-action="editEmoji" data-val="'+e+'" style="width:34px;height:34px;border-radius:9px;border:'+(state.editingReward.emoji===e?'3px solid #a855f7':'2px solid #2d1b5e')+';background:'+(state.editingReward.emoji===e?'#3b1f6a':'transparent')+';font-size:18px;cursor:pointer;">'+e+'</button>';
+              html += '<button data-action="editEmoji" data-val="'+e+'" style="width:36px;height:36px;border-radius:10px;border:2px solid '+(state.editingReward.emoji===e?'#4ade80':'#e2e8f0')+';background:'+(state.editingReward.emoji===e?'#f0fdf4':'#fff')+';font-size:18px;cursor:pointer;">'+e+'</button>';
             });
             html += '</div>';
             html += '<div style="display:flex;gap:8px;margin-bottom:10px;">';
@@ -282,11 +342,11 @@
             html += '<button id="cancelEditBtn" class="btn-ghost" style="flex:1;">取消</button>';
             html += '</div></div>';
           } else {
-            html += '<div style="background:#1a0a3c;border-radius:18px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:12px;border:2px solid #2d1b5e;">';
-            html += '<div style="font-size:32px;">'+r.emoji+'</div>';
-            html += '<div style="flex:1;"><div style="font-weight:800;">'+r.name+'</div><div style="font-size:13px;color:#fbbf24;font-weight:700;">⭐ '+r.cost+' 顆星</div></div>';
-            html += '<button class="btn-ghost" data-action="editReward" data-id="'+r.id+'" style="margin-right:4px;">編輯</button>';
-            html += '<button class="btn-ghost" data-action="removeReward" data-id="'+r.id+'">移除</button>';
+            html += '<div class="member-card">';
+            html += '<div style="font-size:30px;">'+r.emoji+'</div>';
+            html += '<div style="flex:1;"><div style="font-weight:800;">'+r.name+'</div><div style="font-size:13px;color:#f59e0b;font-weight:700;">⭐ '+r.cost+' 顆星</div></div>';
+            html += '<button class="btn-ghost" data-action="editReward" data-id="'+r.id+'" style="margin-right:6px;">編輯</button>';
+            html += '<button class="btn-danger" data-action="removeReward" data-id="'+r.id+'">移除</button>';
             html += '</div>';
           }
         });
@@ -297,9 +357,7 @@
     html += '</div>';
 
     // Toast
-    if (state.toast) {
-      html += '<div class="toast">'+state.toast+'</div>';
-    }
+    if (state.toast) html += '<div class="toast">'+state.toast+'</div>';
 
     // Modal
     if (state.modal) {
@@ -307,39 +365,43 @@
       if (member) {
         var isAdd = state.modal.type === "add";
         var reasonList = isAdd ? ADD_REASONS : REMOVE_REASONS;
-        html += '<div id="modalOverlay" style="position:fixed;inset:0;background:rgba(13,5,32,0.75);backdrop-filter:blur(4px);z-index:10001;display:flex;align-items:flex-end;justify-content:center;">';
-        html += '<div style="width:100%;max-width:480px;background:linear-gradient(180deg,#1e0a3c,#12052a);border-top:3px solid '+(isAdd?'#fbbf24':'#fb7185')+';border-radius:28px 28px 0 0;padding:20px 20px 36px;animation:floatIn 0.25s ease;">';
-        html += '<div style="width:40px;height:5px;border-radius:3px;background:#3b1f6a;margin:0 auto 16px;"></div>';
+        var accentColor = isAdd ? '#4ade80' : '#f87171';
+        var accentGrad = isAdd ? 'linear-gradient(135deg,#4ade80,#22c55e)' : 'linear-gradient(135deg,#f87171,#ef4444)';
+        html += '<div id="modalOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.3);backdrop-filter:blur(6px);z-index:10001;display:flex;align-items:flex-end;justify-content:center;">';
+        html += '<div style="width:100%;max-width:480px;background:#fff;border-top:4px solid '+accentColor+';border-radius:28px 28px 0 0;padding:20px 20px 36px;animation:floatIn 0.25s ease;">';
+        html += '<div style="width:40px;height:5px;border-radius:3px;background:#e2e8f0;margin:0 auto 16px;"></div>';
+
         html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:18px;">';
-        html += '<div style="font-size:34px;">'+member.avatar+'</div>';
-        html += '<div><div style="font-weight:900;font-size:17px;">'+member.name+'</div>';
-        html += '<div style="font-size:13px;font-weight:700;color:'+(isAdd?'#fbbf24':'#fb7185')+'">'+(isAdd?'⭐ 為什麼要給星星？':'🔻 為什麼要扣星星？')+'</div></div></div>';
+        html += '<div style="width:52px;height:52px;border-radius:18px;background:#f0fdf4;display:flex;align-items:center;justify-content:center;font-size:28px;">'+member.avatar+'</div>';
+        html += '<div><div style="font-weight:900;font-size:18px;color:#1e293b;">'+member.name+'</div>';
+        html += '<div style="font-size:13px;font-weight:700;color:'+accentColor+';">'+(isAdd?'⭐ 為什麼要給星星？':'🔻 為什麼要扣星星？')+'</div></div></div>';
 
         // Amount
-        html += '<div style="margin-bottom:16px;"><div style="font-size:12px;color:#6b46c1;font-weight:700;margin-bottom:8px;">幾顆星？</div>';
-        html += '<div style="display:flex;align-items:center;gap:10px;">';
-        html += '<button id="amountMinus" style="width:40px;height:40px;border-radius:12px;border:2px solid #3b1f6a;cursor:pointer;background:transparent;color:#a78bfa;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>';
+        html += '<div style="margin-bottom:16px;padding:12px;background:#f8fafc;border-radius:16px;">';
+        html += '<div style="font-size:12px;color:#94a3b8;font-weight:700;margin-bottom:10px;">幾顆星？</div>';
+        html += '<div style="display:flex;align-items:center;gap:8px;">';
+        html += '<button id="amountMinus" style="width:40px;height:40px;border-radius:12px;border:2px solid #e2e8f0;cursor:pointer;background:#fff;color:#94a3b8;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>';
         html += '<div style="display:flex;gap:6px;flex:1;justify-content:center;">';
         [1,3,5,10].forEach(function(n){
-          html += '<button class="amount-preset" data-n="'+n+'" style="min-width:44px;padding:8px 0;border-radius:12px;cursor:pointer;border:2px solid '+(state.starAmount===n?(isAdd?'#fbbf24':'#fb7185'):'#2d1b5e')+';background:'+(state.starAmount===n?(isAdd?'linear-gradient(135deg,#fbbf24,#f97316)':'linear-gradient(135deg,#fb7185,#e11d48)'):'#1a0a3c')+';color:'+(state.starAmount===n?'#1a0a3c':'#6b46c1')+';font-weight:900;font-size:15px;font-family:Nunito,sans-serif;">'+n+'</button>';
+          var sel = state.starAmount===n;
+          html += '<button class="amount-preset" data-n="'+n+'" style="min-width:48px;padding:8px 0;border-radius:12px;cursor:pointer;border:2px solid '+(sel?accentColor:'#e2e8f0')+';background:'+(sel?accentGrad:'#fff')+';color:'+(sel?'#fff':'#94a3b8')+';font-weight:900;font-size:16px;font-family:Nunito,sans-serif;box-shadow:'+(sel?'0 4px 12px rgba(74,222,128,0.3)':'none')+';">'+n+'</button>';
         });
         html += '</div>';
-        html += '<button id="amountPlus" style="width:40px;height:40px;border-radius:12px;border:2px solid #3b1f6a;cursor:pointer;background:transparent;color:#a78bfa;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>';
+        html += '<button id="amountPlus" style="width:40px;height:40px;border-radius:12px;border:2px solid #e2e8f0;cursor:pointer;background:#fff;color:#94a3b8;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>';
         html += '</div></div>';
 
         // Reasons
         html += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;">';
         reasonList.forEach(function(r){
-          html += '<button class="reason-btn" data-reason="'+r+'" style="padding:10px 16px;border-radius:14px;border:2px solid '+(isAdd?'#7c3aed':'#4c1d95')+';background:'+(isAdd?'linear-gradient(135deg,#3b1f6a,#4c1d95)':'#2d1260')+';color:#f8f0ff;font-weight:700;font-size:14px;cursor:pointer;font-family:Nunito,sans-serif;">'+r+'</button>';
+          html += '<button class="reason-btn" data-reason="'+r+'" style="padding:10px 16px;border-radius:14px;border:2px solid '+(isAdd?'#bbf7d0':'#fecaca')+';background:'+(isAdd?'#f0fdf4':'#fff1f2')+';color:'+(isAdd?'#15803d':'#ef4444')+';font-weight:700;font-size:14px;cursor:pointer;font-family:Nunito,sans-serif;">'+r+'</button>';
         });
         html += '</div>';
 
-        // Custom
         html += '<div style="display:flex;gap:8px;">';
         html += '<input id="customReasonInput" class="input-field" autocomplete="off" placeholder="自己輸入原因…" style="flex:1;" />';
-        html += '<button id="confirmCustomBtn" style="padding:0 20px;border-radius:16px;border:none;background:'+(isAdd?'linear-gradient(135deg,#fbbf24,#f97316)':'linear-gradient(135deg,#fb7185,#e11d48)')+';color:#1a0a3c;font-weight:900;font-size:14px;cursor:pointer;font-family:Nunito,sans-serif;">確認</button>';
+        html += '<button id="confirmCustomBtn" style="padding:0 20px;border-radius:14px;border:none;background:'+accentGrad+';color:#fff;font-weight:900;font-size:14px;cursor:pointer;font-family:Nunito,sans-serif;box-shadow:0 4px 12px rgba(74,222,128,0.3);">確認</button>';
         html += '</div>';
-        html += '<button id="cancelModalBtn" style="width:100%;margin-top:12px;padding:10px 0;border-radius:14px;border:none;background:transparent;color:#6b46c1;font-weight:700;font-size:13px;cursor:pointer;font-family:Nunito,sans-serif;">取消</button>';
+        html += '<button id="cancelModalBtn" style="width:100%;margin-top:12px;padding:10px 0;border-radius:14px;border:2px solid #e2e8f0;background:#fff;color:#94a3b8;font-weight:700;font-size:13px;cursor:pointer;font-family:Nunito,sans-serif;">取消</button>';
         html += '</div></div>';
       }
     }
@@ -349,176 +411,119 @@
   }
 
   function bindEvents() {
-    // Tabs
     document.querySelectorAll("[data-tab]").forEach(function(el){
-      el.addEventListener("click", function(){ state.tab = this.dataset.tab; render(); });
+      el.addEventListener("click", function(){ state.tab=this.dataset.tab; render(); });
     });
-    // Sub tabs
     document.querySelectorAll("[data-section]").forEach(function(el){
-      el.addEventListener("click", function(){ state.manageSection = this.dataset.section; render(); });
+      el.addEventListener("click", function(){ state.manageSection=this.dataset.section; render(); });
     });
-    // Star / minus buttons
     document.querySelectorAll("[data-action='add']").forEach(function(el){
-      el.addEventListener("click", function(){ state.modal = { memberId: this.dataset.id, type: "add" }; state.starAmount = 1; render(); });
+      el.addEventListener("click", function(){ state.modal={memberId:this.dataset.id,type:"add"}; state.starAmount=1; render(); });
     });
     document.querySelectorAll("[data-action='remove']").forEach(function(el){
-      el.addEventListener("click", function(){ state.modal = { memberId: this.dataset.id, type: "remove" }; state.starAmount = 1; render(); });
+      el.addEventListener("click", function(){ state.modal={memberId:this.dataset.id,type:"remove"}; state.starAmount=1; render(); });
     });
-    // Redeem
     document.querySelectorAll("[data-action='redeem']").forEach(function(el){
       el.addEventListener("click", function(){
-        var mid = this.dataset.mid, rid = this.dataset.rid;
-        var m = state.members[mid], r = state.rewards[rid];
-        if (!m || !r) return;
-        if ((m.stars||0) < r.cost) { showToast("⭐ 星星不夠喔！繼續加油！"); return; }
-        db.ref("members/"+mid+"/stars").set((m.stars||0) - r.cost);
-        saveHistory({ time: new Date().toLocaleTimeString("zh-TW"), name: m.name, action: "換到了 "+r.emoji+" "+r.name+"！", type: "redeem" });
+        var mid=this.dataset.mid, rid=this.dataset.rid;
+        var m=state.members[mid], r=state.rewards[rid];
+        if (!m||!r) return;
+        if ((m.stars||0)<r.cost){ showToast("⭐ 星星不夠喔！繼續加油！"); return; }
+        db.ref("members/"+mid+"/stars").set((m.stars||0)-r.cost);
+        saveHistory({time:new Date().toLocaleTimeString("zh-TW"),name:m.name,action:"換到了 "+r.emoji+" "+r.name+"！",type:"redeem"});
         showToast("🎉 "+m.avatar+" "+m.name+" 換到 "+r.emoji+" "+r.name+"！");
       });
     });
-    // Avatar select
     document.querySelectorAll("[data-action='avatar']").forEach(function(el){
-      el.addEventListener("click", function(){ state.newAvatar = this.dataset.val; render(); });
+      el.addEventListener("click", function(){ state.newAvatar=this.dataset.val; render(); });
     });
-    // Add member
-    var addMemberBtn = document.getElementById("addMemberBtn");
-    if (addMemberBtn) {
-      addMemberBtn.addEventListener("click", function(){
-        var name = document.getElementById("newMemberName").value.trim();
-        if (!name) return;
-        db.ref("members/"+uid()).set({ name: name, stars: 0, avatar: state.newAvatar });
-      });
-    }
-    var newMemberInput = document.getElementById("newMemberName");
-    if (newMemberInput) {
-      newMemberInput.addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("addMemberBtn").click(); });
-    }
-    // Remove member
+    var addMemberBtn=document.getElementById("addMemberBtn");
+    if (addMemberBtn) addMemberBtn.addEventListener("click", function(){
+      var name=document.getElementById("newMemberName").value.trim();
+      if (!name) return;
+      db.ref("members/"+uid()).set({name:name,stars:0,avatar:state.newAvatar});
+    });
+    var newMemberInput=document.getElementById("newMemberName");
+    if (newMemberInput) newMemberInput.addEventListener("keydown", function(e){ if(e.key==="Enter") document.getElementById("addMemberBtn").click(); });
     document.querySelectorAll("[data-action='removeMember']").forEach(function(el){
-      el.addEventListener("click", function(){ db.ref("members/"+this.dataset.id).remove(); });
+      el.addEventListener("click", function(){ if(confirm("確定要移除嗎？")) db.ref("members/"+this.dataset.id).remove(); });
     });
-    // Reward emoji
     document.querySelectorAll("[data-action='remoji']").forEach(function(el){
-      el.addEventListener("click", function(){ state.newRewardEmoji = this.dataset.val; render(); });
+      el.addEventListener("click", function(){ state.newRewardEmoji=this.dataset.val; render(); });
     });
-    // Add reward
-    var addRewardBtn = document.getElementById("addRewardBtn");
-    if (addRewardBtn) {
-      addRewardBtn.addEventListener("click", function(){
-        var name = document.getElementById("newRewardName").value.trim();
-        var cost = parseInt(document.getElementById("newRewardCost").value);
-        if (!name || isNaN(cost) || cost <= 0) { showToast("請輸入正確的資料！"); return; }
-        db.ref("rewards/"+uid()).set({ name: name, cost: cost, emoji: state.newRewardEmoji });
-        showToast("✅ 新獎勵加好了！");
-      });
-    }
-    // Edit / remove reward
+    var addRewardBtn=document.getElementById("addRewardBtn");
+    if (addRewardBtn) addRewardBtn.addEventListener("click", function(){
+      var name=document.getElementById("newRewardName").value.trim();
+      var cost=parseInt(document.getElementById("newRewardCost").value);
+      if (!name||isNaN(cost)||cost<=0){ showToast("請輸入正確的資料！"); return; }
+      db.ref("rewards/"+uid()).set({name:name,cost:cost,emoji:state.newRewardEmoji});
+      showToast("✅ 新獎勵加好了！");
+    });
     document.querySelectorAll("[data-action='editReward']").forEach(function(el){
-      el.addEventListener("click", function(){
-        var id = this.dataset.id;
-        state.editingReward = Object.assign({}, state.rewards[id], { id: id });
-        render();
-      });
+      el.addEventListener("click", function(){ var id=this.dataset.id; state.editingReward=Object.assign({},state.rewards[id],{id:id}); render(); });
     });
     document.querySelectorAll("[data-action='removeReward']").forEach(function(el){
-      el.addEventListener("click", function(){ db.ref("rewards/"+this.dataset.id).remove(); });
+      el.addEventListener("click", function(){ if(confirm("確定要移除嗎？")) db.ref("rewards/"+this.dataset.id).remove(); });
     });
     document.querySelectorAll("[data-action='editEmoji']").forEach(function(el){
-      el.addEventListener("click", function(){ if(state.editingReward) { state.editingReward.emoji = this.dataset.val; render(); } });
+      el.addEventListener("click", function(){ if(state.editingReward){state.editingReward.emoji=this.dataset.val; render();} });
     });
-    var saveEditBtn = document.getElementById("saveEditBtn");
-    if (saveEditBtn) {
-      saveEditBtn.addEventListener("click", function(){
-        var name = document.getElementById("editRewardName").value.trim();
-        var cost = parseInt(document.getElementById("editRewardCost").value);
-        if (!name || isNaN(cost) || cost <= 0) return;
-        db.ref("rewards/"+state.editingReward.id).update({ name: name, cost: cost, emoji: state.editingReward.emoji });
-        state.editingReward = null;
-        showToast("✅ 獎勵更新好了！");
-      });
-    }
-    var cancelEditBtn = document.getElementById("cancelEditBtn");
-    if (cancelEditBtn) {
-      cancelEditBtn.addEventListener("click", function(){ state.editingReward = null; render(); });
-    }
-    // Modal
-    var modalOverlay = document.getElementById("modalOverlay");
-    if (modalOverlay) {
-      modalOverlay.addEventListener("click", function(e){ if(e.target===this){ state.modal=null; render(); } });
-    }
-    var cancelModalBtn = document.getElementById("cancelModalBtn");
-    if (cancelModalBtn) {
-      cancelModalBtn.addEventListener("click", function(){ state.modal=null; render(); });
-    }
-    // Amount
-    var amountMinus = document.getElementById("amountMinus");
-    if (amountMinus) {
-      amountMinus.addEventListener("click", function(){ state.starAmount = Math.max(1, state.starAmount-1); render(); });
-    }
-    var amountPlus = document.getElementById("amountPlus");
-    if (amountPlus) {
-      amountPlus.addEventListener("click", function(){ state.starAmount = state.starAmount+1; render(); });
-    }
+    var saveEditBtn=document.getElementById("saveEditBtn");
+    if (saveEditBtn) saveEditBtn.addEventListener("click", function(){
+      var name=document.getElementById("editRewardName").value.trim();
+      var cost=parseInt(document.getElementById("editRewardCost").value);
+      if (!name||isNaN(cost)||cost<=0) return;
+      db.ref("rewards/"+state.editingReward.id).update({name:name,cost:cost,emoji:state.editingReward.emoji});
+      state.editingReward=null; showToast("✅ 獎勵更新好了！");
+    });
+    var cancelEditBtn=document.getElementById("cancelEditBtn");
+    if (cancelEditBtn) cancelEditBtn.addEventListener("click", function(){ state.editingReward=null; render(); });
+    var modalOverlay=document.getElementById("modalOverlay");
+    if (modalOverlay) modalOverlay.addEventListener("click", function(e){ if(e.target===this){state.modal=null;render();} });
+    var cancelModalBtn=document.getElementById("cancelModalBtn");
+    if (cancelModalBtn) cancelModalBtn.addEventListener("click", function(){ state.modal=null; render(); });
+    var amountMinus=document.getElementById("amountMinus");
+    if (amountMinus) amountMinus.addEventListener("click", function(){ state.starAmount=Math.max(1,state.starAmount-1); render(); });
+    var amountPlus=document.getElementById("amountPlus");
+    if (amountPlus) amountPlus.addEventListener("click", function(){ state.starAmount++; render(); });
     document.querySelectorAll(".amount-preset").forEach(function(el){
-      el.addEventListener("click", function(){ state.starAmount = parseInt(this.dataset.n); render(); });
+      el.addEventListener("click", function(){ state.starAmount=parseInt(this.dataset.n); render(); });
     });
-    // Reason buttons
     document.querySelectorAll(".reason-btn").forEach(function(el){
       el.addEventListener("click", function(){ confirmChange(this.dataset.reason); });
     });
-    // Custom reason
-    var confirmCustomBtn = document.getElementById("confirmCustomBtn");
-    if (confirmCustomBtn) {
-      confirmCustomBtn.addEventListener("click", function(){
-        var r = document.getElementById("customReasonInput").value.trim();
-        if (r) confirmChange(r);
-      });
-    }
-    var customInput = document.getElementById("customReasonInput");
-    if (customInput) {
-      customInput.addEventListener("keydown", function(e){
-        if (e.key==="Enter" && this.value.trim()) confirmChange(this.value.trim());
-      });
-    }
+    var confirmCustomBtn=document.getElementById("confirmCustomBtn");
+    if (confirmCustomBtn) confirmCustomBtn.addEventListener("click", function(){
+      var r=document.getElementById("customReasonInput").value.trim();
+      if (r) confirmChange(r);
+    });
+    var customInput=document.getElementById("customReasonInput");
+    if (customInput) customInput.addEventListener("keydown", function(e){ if(e.key==="Enter"&&this.value.trim()) confirmChange(this.value.trim()); });
   }
 
   render();
 
   // Pull to refresh
-  var ptrStart = 0;
-  var ptrActive = false;
-  var ptrThreshold = 80;
-
-  document.addEventListener('touchstart', function(e) {
-    if (window.scrollY === 0) {
-      ptrStart = e.touches[0].clientY;
-      ptrActive = true;
-    }
-  }, { passive: true });
-
-  document.addEventListener('touchmove', function(e) {
+  var ptrStart=0, ptrActive=false, ptrThreshold=80;
+  document.addEventListener('touchstart', function(e){ if(window.scrollY===0){ptrStart=e.touches[0].clientY;ptrActive=true;} },{passive:true});
+  document.addEventListener('touchmove', function(e){
     if (!ptrActive) return;
-    var dist = Math.max(0, e.touches[0].clientY - ptrStart);
-    if (dist > 0 && window.scrollY === 0) {
-      var h = Math.min(dist * 0.4, 60);
-      var indicator = document.getElementById('ptr-indicator');
-      var text = document.getElementById('ptr-text');
-      if (indicator) indicator.style.height = h + 'px';
-      if (text) text.textContent = dist > ptrThreshold ? '🔄 放開以重整' : '⬇️ 下拉重整';
+    var dist=Math.max(0,e.touches[0].clientY-ptrStart);
+    if (dist>0&&window.scrollY===0){
+      var indicator=document.getElementById('ptr-indicator');
+      var text=document.getElementById('ptr-text');
+      if (indicator) indicator.style.height=Math.min(dist*0.4,60)+'px';
+      if (text) text.textContent=dist>ptrThreshold?'🔄 放開以重整':'⬇️ 下拉重整';
     }
-  }, { passive: true });
-
-  document.addEventListener('touchend', function(e) {
+  },{passive:true});
+  document.addEventListener('touchend', function(e){
     if (!ptrActive) return;
-    var dist = e.changedTouches[0].clientY - ptrStart;
-    var indicator = document.getElementById('ptr-indicator');
-    if (indicator) indicator.style.height = '0';
-    if (dist > ptrThreshold && window.scrollY === 0) {
-      showToast('🔄 重整中…');
-      setTimeout(function() { location.reload(); }, 500);
-    }
-    ptrActive = false;
-  }, { passive: true });
+    var dist=e.changedTouches[0].clientY-ptrStart;
+    var indicator=document.getElementById('ptr-indicator');
+    if (indicator) indicator.style.height='0';
+    if (dist>ptrThreshold&&window.scrollY===0){ showToast('🔄 重整中…'); setTimeout(function(){location.reload();},500); }
+    ptrActive=false;
+  },{passive:true});
 </script>
 </body>
 </html>
