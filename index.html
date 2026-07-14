@@ -379,15 +379,10 @@
         // Amount
         html += '<div style="margin-bottom:16px;padding:12px;background:#f8fafc;border-radius:16px;">';
         html += '<div style="font-size:12px;color:#94a3b8;font-weight:700;margin-bottom:10px;">幾顆星？</div>';
-        html += '<div style="display:flex;align-items:center;gap:8px;">';
-        html += '<button id="amountMinus" style="width:40px;height:40px;border-radius:12px;border:2px solid #e2e8f0;cursor:pointer;background:#fff;color:#94a3b8;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>';
-        html += '<div style="display:flex;gap:6px;flex:1;justify-content:center;">';
-        [1,3,5,10].forEach(function(n){
-          var sel = state.starAmount===n;
-          html += '<button class="amount-preset" data-n="'+n+'" style="min-width:48px;padding:8px 0;border-radius:12px;cursor:pointer;border:2px solid '+(sel?accentColor:'#e2e8f0')+';background:'+(sel?accentGrad:'#fff')+';color:'+(sel?'#fff':'#94a3b8')+';font-weight:900;font-size:16px;font-family:Nunito,sans-serif;box-shadow:'+(sel?'0 4px 12px rgba(74,222,128,0.3)':'none')+';">'+n+'</button>';
-        });
-        html += '</div>';
-        html += '<button id="amountPlus" style="width:40px;height:40px;border-radius:12px;border:2px solid #e2e8f0;cursor:pointer;background:#fff;color:#94a3b8;font-size:20px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>';
+        html += '<div style="display:flex;align-items:center;justify-content:center;gap:16px;">';
+        html += '<button id="amountMinus" style="width:48px;height:48px;border-radius:14px;border:2px solid #e2e8f0;cursor:pointer;background:#fff;color:#64748b;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>';
+        html += '<div id="amountDisplay" style="min-width:72px;text-align:center;font-size:36px;font-weight:900;color:'+accentColor+';">'+state.starAmount+'</div>';
+        html += '<button id="amountPlus" style="width:48px;height:48px;border-radius:14px;border:2px solid #e2e8f0;cursor:pointer;background:#fff;color:#64748b;font-size:24px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>';
         html += '</div></div>';
 
         // Reasons
@@ -483,11 +478,16 @@
     var cancelModalBtn=document.getElementById("cancelModalBtn");
     if (cancelModalBtn) cancelModalBtn.addEventListener("click", function(){ state.modal=null; render(); });
     var amountMinus=document.getElementById("amountMinus");
-    if (amountMinus) amountMinus.addEventListener("click", function(){ state.starAmount=Math.max(1,state.starAmount-1); render(); });
+    if (amountMinus) amountMinus.addEventListener("click", function(){
+      state.starAmount=Math.max(1,state.starAmount-1);
+      var d=document.getElementById("amountDisplay");
+      if(d) d.textContent=state.starAmount;
+    });
     var amountPlus=document.getElementById("amountPlus");
-    if (amountPlus) amountPlus.addEventListener("click", function(){ state.starAmount++; render(); });
-    document.querySelectorAll(".amount-preset").forEach(function(el){
-      el.addEventListener("click", function(){ state.starAmount=parseInt(this.dataset.n); render(); });
+    if (amountPlus) amountPlus.addEventListener("click", function(){
+      state.starAmount++;
+      var d=document.getElementById("amountDisplay");
+      if(d) d.textContent=state.starAmount;
     });
     document.querySelectorAll(".reason-btn").forEach(function(el){
       el.addEventListener("click", function(){ confirmChange(this.dataset.reason); });
